@@ -45,24 +45,29 @@ public class CustomVerticesTest : MonoBehaviour
 
     bool inited;
 
+    JobHandle handle;
+
     void UpdateMesh()
     {
-        var handle = new VertexJob()
+        if (inited)
+            handle.Complete();
+
+        Profiler.BeginSample("Set Vertex Data");
+        VertexOps.SetVertexDataToMesh(mesh, vertices);
+        Profiler.EndSample();
+
+        handle = new VertexJob()
         {
             vertices = vertices,
             size = SIZE,
             time = Time.time
         }.Schedule(TOTAL_SIZE, 0);
 
-        new NormalsJob()
+        handle = new NormalsJob()
         {
             vertices = vertices,
             size = SIZE,
-        }.Schedule(TOTAL_SIZE, 0, handle).Complete();
-
-        Profiler.BeginSample("Set Vertex Data");
-        VertexOps.SetVertexDataToMesh(mesh, vertices);
-        Profiler.EndSample();
+        }.Schedule(TOTAL_SIZE, 0, handle);
 
         if (!inited)
         {
