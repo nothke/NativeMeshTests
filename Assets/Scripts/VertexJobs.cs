@@ -68,7 +68,8 @@ public static class VertexOps
         MeshUpdateFlags flags =
             MeshUpdateFlags.DontResetBoneBounds |
             MeshUpdateFlags.DontRecalculateBounds |
-            MeshUpdateFlags.DontValidateIndices;
+            MeshUpdateFlags.DontValidateIndices |
+            MeshUpdateFlags.DontNotifyMeshUsers;
 
         mesh.SetVertexBufferData(vertices, 0, 0, vertices.Length, 0, flags);
     }
