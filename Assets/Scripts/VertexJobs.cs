@@ -24,7 +24,7 @@ public struct VertexJob : IJobParallelFor
         float y = noise.cnoise(float2(x * 0.213f + time, z * 0.213f));
 
         Vertex vertex = new Vertex();
-        vertex.pos = float3(x, y, z);
+        vertex.pos = half3((half)x, (half)y, (half)z);
         vertices[i] = vertex;
     }
 }
@@ -47,15 +47,14 @@ public struct NormalsJob : IJobParallelFor
         int iUp = x + (y + 1) * size;
 
         Vertex vertex = vertices[i];
-
         if (x > 0 && x < size - 1 && y > 0 && y < size - 1)
         {
-            float nX = vertices[iRight].pos.y - vertices[iLeft].pos.y;
-            float nY = vertices[iUp].pos.y - vertices[iDown].pos.y;
-            vertex.normal = normalize(float3(-nX, 1, -nY));
+            half nX = (half)(-(vertices[iRight].pos.y - vertices[iLeft].pos.y));
+            half nY = (half)(-(vertices[iUp].pos.y - vertices[iDown].pos.y));
+            vertex.normal = (half3)normalize(new half3(nX, (half)1, nY));
         }
         else
-            vertex.normal = up();
+            vertex.normal = half3((half)0, (half)1, (half)0);
 
         vertices[i] = vertex;
     }

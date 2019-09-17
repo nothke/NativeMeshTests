@@ -16,7 +16,7 @@ public class MeshTest : MonoBehaviour
     NativeArray<float3> vertices;
     NativeArray<float3> normals;
 
-    const int SIZE = 256;
+    const int SIZE = 32;
     const int TOTAL_SIZE = SIZE * SIZE;
 
     Vector3[] vertexArray;
