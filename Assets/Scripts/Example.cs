@@ -2,6 +2,8 @@
 using UnityEngine.Rendering;
 using Unity.Collections;
 
+using Unity.Mathematics;
+
 public class Example : MonoBehaviour
 {
     // Vertex with FP32 position, FP16 2D normal and a 4-byte tangent.
