@@ -76,13 +76,6 @@ public static class VertexOps
 
     public static void SetMeshVertexBufferParams(Mesh mesh, int vertexCount)
     {
-        // specify vertex count and layout
-        var layout = new[]
-        {
-            new VertexAttributeDescriptor(VertexAttribute.Position, VertexAttributeFormat.Float32, 3),
-            new VertexAttributeDescriptor(VertexAttribute.Normal, VertexAttributeFormat.Float32, 3),
-        };
-
-        mesh.SetVertexBufferParams(vertexCount, layout);
+        mesh.SetVertexBufferParams(vertexCount, Vertex.GetVertexAttributes());
     }
 }

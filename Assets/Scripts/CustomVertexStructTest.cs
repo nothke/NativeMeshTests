@@ -9,7 +9,7 @@ using static Unity.Mathematics.math;
 using Unity.Burst;
 using UnityEngine.Profiling;
 
-public class CustomVerticesTest : MonoBehaviour
+public class CustomVertexStructTest : MonoBehaviour
 {
     Mesh mesh;
 
