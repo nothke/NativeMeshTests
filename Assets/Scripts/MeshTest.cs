@@ -148,6 +148,7 @@ public class MeshTest : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (!enabled) return;
         vertices.Dispose();
         normals.Dispose();
     }

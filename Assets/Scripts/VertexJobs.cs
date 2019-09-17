@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 using Unity.Jobs;
 using Unity.Burst;
@@ -22,7 +23,7 @@ public struct VertexJob : IJobParallelFor
 
         float y = noise.cnoise(float2(x * 0.213f + time, z * 0.213f));
 
-        Vertex vertex = vertices[i];
+        Vertex vertex = new Vertex();
         vertex.pos = float3(x, y, z);
         vertices[i] = vertex;
     }
@@ -31,6 +32,7 @@ public struct VertexJob : IJobParallelFor
 [BurstCompile]
 public struct NormalsJob : IJobParallelFor
 {
+    [NativeDisableParallelForRestriction]
     public NativeArray<Vertex> vertices; // Read and Write
     public int size;
 
@@ -63,6 +65,23 @@ public static class VertexOps
 {
     public static void SetVertexDataToMesh(Mesh mesh, NativeArray<Vertex> vertices)
     {
-        mesh.SetVertexBufferData(vertices, 0, 0, vertices.Length);
+        MeshUpdateFlags flags =
+            MeshUpdateFlags.DontResetBoneBounds |
+            MeshUpdateFlags.DontRecalculateBounds |
+            MeshUpdateFlags.DontValidateIndices;
+
+        mesh.SetVertexBufferData(vertices, 0, 0, vertices.Length, 0, flags);
+    }
+
+    public static void SetMeshVertexBufferParams(Mesh mesh, int vertexCount)
+    {
+        // specify vertex count and layout
+        var layout = new[]
+        {
+            new VertexAttributeDescriptor(VertexAttribute.Position, VertexAttributeFormat.Float32, 3),
+            new VertexAttributeDescriptor(VertexAttribute.Normal, VertexAttributeFormat.Float32, 3),
+        };
+
+        mesh.SetVertexBufferParams(vertexCount, layout);
     }
 }
