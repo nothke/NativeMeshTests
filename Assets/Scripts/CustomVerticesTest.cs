@@ -40,6 +40,7 @@ public class CustomVerticesTest : MonoBehaviour
     private void OnDestroy()
     {
         if (!enabled) return;
+        handle.Complete();
         vertices.Dispose();
     }
 
